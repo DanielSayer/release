@@ -1,4 +1,4 @@
-import { handleClassNames } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import React, { ReactNode } from "react"
 
 interface MaxWidthWrapperProps {
@@ -12,7 +12,7 @@ const MaxWidthWrapper: React.FC<MaxWidthWrapperProps> = ({
 }): React.ReactElement => {
   return (
     <div
-      className={handleClassNames(
+      className={cn(
         "mx-auto w-full max-w-screen-xl px-2.5 md:px-20",
         className
       )}
