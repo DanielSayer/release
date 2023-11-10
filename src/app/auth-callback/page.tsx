@@ -1,4 +1,5 @@
 import { useRouter, useSearchParams } from 'next/navigation'
+import { trpc } from '../_trpc/client'
 
 const Page = () => {
   const router = useRouter()
