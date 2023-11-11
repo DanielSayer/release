@@ -133,8 +133,8 @@ export default function Home() {
                 Check out your notes
               </span>
               <span className="mt-2 text-zinc-700">
-                It's really that simple, from here you can ask questions or even
-                download them!
+                It&apos;s really that simple, from here you can ask questions or
+                even download them!
               </span>
             </div>
           </li>
