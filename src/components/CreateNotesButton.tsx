@@ -1,15 +1,15 @@
 'use client'
 
+import { trpc } from '@/app/_trpc/client'
+import { useUploadThing } from '@/lib/uploadthing'
+import { Cloud, File, Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import Dropzone from 'react-dropzone'
 import { Button } from './ui/button'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
-import Dropzone from 'react-dropzone'
-import { Cloud, File, Loader2 } from 'lucide-react'
 import { Progress } from './ui/progress'
-import { useUploadThing } from '@/lib/uploadthing'
 import { useToast } from './ui/use-toast'
-import { trpc } from '@/app/_trpc/client'
-import { useRouter } from 'next/navigation'
 
 const UploadDropzone = () => {
   const router = useRouter()
@@ -42,38 +42,39 @@ const UploadDropzone = () => {
     return interval
   }
 
+  const handleOnDrop = async (acceptedFile: File[]) => {
+    setIsUploading(true)
+    const progressInterval = startSimulatedProgress()
+
+    const res = await startUpload(acceptedFile)
+    if (!res) {
+      clearInterval(progressInterval)
+      return toast({
+        title: 'Something went wrong',
+        description: 'Please try again later',
+        variant: 'destructive',
+      })
+    }
+
+    const [fileResponse] = res
+
+    const key = fileResponse.key
+    if (!key) {
+      clearInterval(progressInterval)
+      return toast({
+        title: 'Something went wrong',
+        description: 'Please try again later',
+        variant: 'destructive',
+      })
+    }
+
+    clearInterval(progressInterval)
+    setUploadProgress(100)
+    startPolling({ key })
+  }
+
   return (
-    <Dropzone
-      multiple={false}
-      onDrop={async (acceptedFile) => {
-        setIsUploading(true)
-        const progressInterval = startSimulatedProgress()
-
-        const res = await startUpload(acceptedFile)
-        if (!res) {
-          return toast({
-            title: 'Something went wrong',
-            description: 'Please try again later',
-            variant: 'destructive',
-          })
-        }
-
-        const [fileResponse] = res
-
-        const key = fileResponse.key
-        if (!key) {
-          return toast({
-            title: 'Something went wrong',
-            description: 'Please try again later',
-            variant: 'destructive',
-          })
-        }
-
-        clearInterval(progressInterval)
-        setUploadProgress(100)
-        startPolling({ key })
-      }}
-    >
+    <Dropzone multiple={false} onDrop={handleOnDrop}>
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
           {...getRootProps({
