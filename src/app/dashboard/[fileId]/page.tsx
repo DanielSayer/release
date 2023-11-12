@@ -2,8 +2,7 @@ import ChatWrapper from '@/components/ChatWrapper'
 import PdfRenderer from '@/components/PdfRenderer'
 import { db } from '@/db'
 import useAuth from '@/hooks/useAuth'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 interface PageProps {
@@ -33,7 +32,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         <div className="flex-1 xl:flex">
           <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
             {/**TABS  */}
-            <PdfRenderer />
+            <PdfRenderer url={file.url} />
           </div>
         </div>
 
