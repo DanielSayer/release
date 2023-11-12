@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { Loader2, MessageSquare, Plus, Trash } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
+import DeleteButton from './DeleteButton'
 
 interface NotesCardProps {
   id: string
@@ -43,18 +44,11 @@ const NotesCard: React.FC<NotesCardProps> = ({
         <div className=" flex items-center gap-2">
           <MessageSquare className="h-4 w-4" />0
         </div>
-        <Button
-          size="sm"
-          className="w-full"
-          variant="destructive"
-          onClick={handleDelete}
-        >
-          {isDeleting ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Trash className="h-4 w-4" />
-          )}
-        </Button>
+        <DeleteButton
+          fileName={name}
+          isDeleting={isDeleting}
+          handleDelete={() => handleDelete()}
+        />
       </div>
     </>
   )
