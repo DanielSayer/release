@@ -39,7 +39,11 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
           <span className="text-violet-600">{fileName}</span>?
         </h1>
         <div className="flex gap-3 w-full">
-          <Button variant="outline" onClick={handleDelete} className="w-full">
+          <Button
+            variant="outline"
+            onClick={() => setIsOpen(false)}
+            className="w-full"
+          >
             No! Cancel
           </Button>
           <Button
