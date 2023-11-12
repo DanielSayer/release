@@ -1,4 +1,4 @@
-import ChatWrapper from '@/components/ChatWrapper'
+import ChatWrapper from '@/components/chat/ChatWrapper'
 import PdfRenderer from '@/components/PdfRenderer'
 import { db } from '@/db'
 import useAuth from '@/hooks/useAuth'
@@ -37,7 +37,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         </div>
 
         <div className="shrik-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-top-0">
-          <ChatWrapper />
+          <ChatWrapper fileId={fileId} />
         </div>
       </div>
     </div>
