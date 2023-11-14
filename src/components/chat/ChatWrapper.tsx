@@ -7,13 +7,13 @@ import Messages from './Messages'
 import { ChevronLeft, Loader2, XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { buttonVariants } from '../ui/button'
+import { ChatContextProvider } from './ChatContext'
 
 interface ChatWrapperProps {
   fileId: string
 }
 
 const ChatWrapper: React.FC<ChatWrapperProps> = ({ fileId }) => {
-  console.log(fileId)
   const { data, isLoading } = trpc.getFileUploadStatus.useQuery(
     { fileId: fileId },
     {
@@ -85,13 +85,15 @@ const ChatWrapper: React.FC<ChatWrapperProps> = ({ fileId }) => {
   }
 
   return (
-    <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-      <div className="flex-1 flex flex-col justify-between mb-28">
-        <Messages />
-      </div>
+    <ChatContextProvider fileId={fileId}>
+      <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
+        <div className="flex-1 flex flex-col justify-between mb-28">
+          <Messages fileId={fileId} />
+        </div>
 
-      <ChatInput />
-    </div>
+        <ChatInput />
+      </div>
+    </ChatContextProvider>
   )
 }
 
