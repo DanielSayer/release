@@ -3,12 +3,17 @@ import { INFINITE_QUERY_LIMIT } from '@/config/infiniteQuery'
 import { Loader2, MessageSquare } from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import Message from './Message'
+import { useContext, useEffect, useRef } from 'react'
+import { ChatContext } from './ChatContext'
+import { useIntersection } from '@mantine/hooks'
 
 interface MessagesProps {
   fileId: string
 }
 
 const Messages = ({ fileId }: MessagesProps) => {
+  const { isLoading: isAiLoading } = useContext(ChatContext)
+
   const { data, isLoading, fetchNextPage } =
     trpc.getFileMessages.useInfiniteQuery(
       {
@@ -33,9 +38,21 @@ const Messages = ({ fileId }: MessagesProps) => {
     ),
   }
   const combinedMessages = [
-    ...(true ? [loadingMessage] : []),
+    ...(isAiLoading ? [loadingMessage] : []),
     ...(messages ?? []),
   ]
+
+  const lastMessageRef = useRef<HTMLDivElement>(null)
+  const { ref, entry } = useIntersection({
+    root: lastMessageRef.current,
+    threshold: 1,
+  })
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage()
+    }
+  }, [entry, fetchNextPage])
 
   return (
     <div className="flex max-h-[calc(100vh-3.5rem-7rem)] border-zinc-200 flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
@@ -45,22 +62,14 @@ const Messages = ({ fileId }: MessagesProps) => {
             combinedMessages[i - 1]?.isUserMessage ===
             combinedMessages[i]?.isUserMessage
 
-          if (i === combinedMessages.length - 1) {
-            return (
-              <Message
-                message={msg}
-                isNextMessageSamePerson={isNextMessageSamePerson}
-                key={msg.id}
-              />
-            )
-          } else {
-            return (
-              <Message
-                message={msg}
-                isNextMessageSamePerson={isNextMessageSamePerson}
-              />
-            )
-          }
+          return (
+            <Message
+              ref={ref}
+              message={msg}
+              isNextMessageSamePerson={isNextMessageSamePerson}
+              key={msg.id}
+            />
+          )
         })
       ) : isLoading ? (
         <div className="w-full flex flex-col gap-2">

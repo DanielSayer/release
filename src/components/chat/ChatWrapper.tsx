@@ -87,7 +87,7 @@ const ChatWrapper: React.FC<ChatWrapperProps> = ({ fileId }) => {
   return (
     <ChatContextProvider fileId={fileId}>
       <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-        <div className="flex-1 flex flex-col justify-between mb-28">
+        <div className="flex-1 flex flex-col justify-between mb-26">
           <Messages fileId={fileId} />
         </div>
 
