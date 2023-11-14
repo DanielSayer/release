@@ -20,7 +20,6 @@ const Page: React.FC<PageProps> = async ({ params }) => {
       userId: user.id,
     },
   })
-
   if (!file) {
     notFound()
   }
