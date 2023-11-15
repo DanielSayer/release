@@ -19,7 +19,7 @@ export default function Home() {
         </h1>
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
           release allows you to create notes straight from your voice. Simply
-          start talking and we'll make your notes for you.
+          start talking and we&apos;ll make your notes for you.
         </p>
         <Link
           className={buttonVariants({
