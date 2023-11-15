@@ -6,8 +6,13 @@ import Skeleton from 'react-loading-skeleton'
 import CreateNotesButton from './CreateNotesButton'
 import NotesCard from './NotesCard'
 import { useState } from 'react'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
 
-const Dashboard = () => {
+interface PageProps {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
+}
+
+const Dashboard = ({ subscriptionPlan }: PageProps) => {
   const utils = trpc.useUtils()
   const { data: files, isLoading } = trpc.getUserFiles.useQuery()
   const [deletingFileId, setDeletingFileId] = useState<string>('')
@@ -28,7 +33,7 @@ const Dashboard = () => {
     <main className="mx-auto max-w-7xl sm:p-10">
       <div className="mt-8 flex flex-col items-center justify-between gap-4 border-b border-gray-200 pb-5 mx-2 sm:flex-row sm:items-center sm:gap-0">
         <h1 className="mb-3 font-bold text-5xl text-gray-900">My Notes</h1>
-        <CreateNotesButton />
+        <CreateNotesButton isSubscribed={subscriptionPlan.isSubscribed} />
       </div>
 
       {files && files.length !== 0 ? (
