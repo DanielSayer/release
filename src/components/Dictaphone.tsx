@@ -10,10 +10,6 @@ const Dictaphone = () => {
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition()
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>
-  }
-
   const startListening = () => {
     setIsListening(true)
     SpeechRecognition.startListening({ continuous: true })
@@ -25,12 +21,7 @@ const Dictaphone = () => {
   }
 
   return (
-    <div>
-      <p>Microphone: {isListening ? 'on' : 'off'}</p>
-      <button onClick={startListening}>Start</button>
-      <button onClick={stopListening}>Stop</button>
-      <p>{transcript}</p>
-    </div>
+    <div className="border h-64 m-4 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"></div>
   )
 }
 export default Dictaphone
